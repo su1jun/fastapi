@@ -98,17 +98,54 @@ async def read_items(
     return results """
 
 # consider order of parameters <- not required in fastapi
-@app.get("/items/{item_id}")
+""" @app.get("/items/{item_id}")
 async def read_items(q: str, item_id: int = Path(title="The ID of the item to get")):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results """
+
+# use * -> path parameter must be before query parameter
+""" @app.get("/items/{item_id}")
+async def read_items(*, item_id: int = Path(title="The ID of the item to get"), q: str):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results """
+
+# add ge to path parameter
+@app.get("/items/{item_id}")
+async def read_items(
+    *, item_id: int = Path(title="The ID of the item to get", ge=1), q: str
+):
     results = {"item_id": item_id}
     if q:
         results.update({"q": q})
     return results
 
-# use * -> path parameter must be before query parameter
+# add gt, le to path parameter
 @app.get("/items/{item_id}")
-async def read_items(*, item_id: int = Path(title="The ID of the item to get"), q: str):
+async def read_items(
+    *,
+    item_id: int = Path(title="The ID of the item to get", gt=0, le=1000),
+    q: str,
+):
     results = {"item_id": item_id}
     if q:
         results.update({"q": q})
+    return results
+
+# add gt, ge, lt, le to query parameter
+@app.get("/items/{item_id}")
+async def read_items(
+    *,
+    item_id: int = Path(title="The ID of the item to get", ge=0, le=1000),
+    q: str,
+    size: float = Query(gt=0, lt=10.5),
+):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    if size:
+        results.update({"size": size})
     return results
