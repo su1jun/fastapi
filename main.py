@@ -1,5 +1,5 @@
 from typing import Union, List
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Path
 
 app = FastAPI()
 
@@ -60,21 +60,15 @@ async def read_items(
     return results """
 
 # add alias to query parameter
-@app.get("/items/")
+""" @app.get("/items/")
 async def read_items(q: Union[str, None] = Query(default=None, alias="item-query")): # http://127.0.0.1:8000/items/?item-query=foobaritems <- alias
     results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
     if q:
         results.update({"q": q})
-    return results
-
-from typing import Union
-
-from fastapi import FastAPI, Query
-
-app = FastAPI()
+    return results """
 
 # add deprecated to query parameter
-@app.get("/items/")
+""" @app.get("/items/")
 async def read_items(
     q: Union[str, None] = Query(
         default=None,
@@ -88,6 +82,17 @@ async def read_items(
     ),
 ):
     results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
+    if q:
+        results.update({"q": q})
+    return results """
+
+# add metadata to path parameter
+@app.get("/items/{item_id}")
+async def read_items(
+    item_id: int = Path(title="The ID of the item to get"),
+    q: Union[str, None] = Query(default=None, alias="item-query"),
+):
+    results = {"item_id": item_id}
     if q:
         results.update({"q": q})
     return results
