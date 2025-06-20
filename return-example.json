@@ -32,5 +32,24 @@
             "full_name": "Dave Grohl"
         },
         "importance": 5
+    },
+
+    "embed" : {
+        "before" : {
+            "item_id": 1,
+            "name": "Foo",
+            "description": "The pretender",
+            "price": 42.0,
+            "tax": 3.2
+        },
+        "after" : {
+            "item_id": 1,
+            "item": {
+                "name": "Foo",
+                "description": "The pretender",
+                "price": 42.0,
+                "tax": 3.2
+            }
+        }
     }
 }
