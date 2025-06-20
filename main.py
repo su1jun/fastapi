@@ -1,5 +1,5 @@
 from typing import Union
-from fastapi import FastAPI, Path
+from fastapi import FastAPI, Path, Body
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -13,7 +13,7 @@ class User(BaseModel):
     username: str
     full_name: Union[str, None] = None
 
-
+# frist
 """ @app.put("/items/{item_id}")
 async def update_item(
     *,
@@ -28,7 +28,16 @@ async def update_item(
         results.update({"item": item})
     return results """
 
+# second
+# use multiple body parameters
 @app.put("/items/{item_id}")
 async def update_item(item_id: int, item: Item, user: User):
     results = {"item_id": item_id, "item": item, "user": user}
+    return results
+
+# third
+# add Body
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item, user: User, importance: int = Body()):
+    results = {"item_id": item_id, "item": item, "user": user, "importance": importance}
     return results
