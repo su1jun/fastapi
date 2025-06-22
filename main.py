@@ -1,15 +1,17 @@
-from typing import Union
+from typing import List, Union
 from fastapi import FastAPI
 from pydantic import BaseModel
 
 app = FastAPI()
 
+# standard list usage
+# my_list: List[str]
 class Item(BaseModel):
     name: str
     description: Union[str, None] = None
     price: float
     tax: Union[float, None] = None
-    tags: list = []
+    tags: List[str] = []
 
 @app.put("/items/{item_id}")
 async def update_item(item_id: int, item: Item):
