@@ -1,6 +1,6 @@
 from typing import Set, List, Union
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 
 app = FastAPI()
 
@@ -8,7 +8,7 @@ app = FastAPI()
 # my_list: List[str]
 
 class Image(BaseModel):
-    url: str
+    url: HttpUrl
     name: str
 
 class Item(BaseModel):
@@ -17,7 +17,8 @@ class Item(BaseModel):
     price: float
     tax: Union[float, None] = None
     tags: Set[str] = set()
-    image: Union[Image, None] = None
+    images: Union[List[Image], None] = None # second example
+
 
 @app.put("/items/{item_id}")
 async def update_item(item_id: int, item: Item):
