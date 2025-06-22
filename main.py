@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import Set, List, Union
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -6,14 +6,21 @@ app = FastAPI()
 
 # standard list usage
 # my_list: List[str]
+
+class Image(BaseModel):
+    url: str
+    name: str
+
 class Item(BaseModel):
     name: str
     description: Union[str, None] = None
     price: float
     tax: Union[float, None] = None
-    tags: List[str] = []
+    tags: Set[str] = set()
+    image: Union[Image, None] = None
 
 @app.put("/items/{item_id}")
 async def update_item(item_id: int, item: Item):
     results = {"item_id": item_id, "item": item}
     return results
+
