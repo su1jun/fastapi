@@ -48,5 +48,3 @@ async def update_item(
 ):
     results = {"item_id": item_id, "item": item}
     return results
-
-## 1
