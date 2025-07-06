@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Union
 from fastapi import FastAPI, Header
 
 app = FastAPI()
@@ -7,8 +7,25 @@ app = FastAPI()
 async def read_items(user_agent: Union[str, None] = Header(default=None)):
     return {"User-Agent": user_agent} """
 
-@app.get("/items/")
+""" @app.get("/items/")
 async def read_items(
     strange_header: Union[str, None] = Header(default=None, convert_underscores=False),
 ):
-    return {"strange_header": strange_header}
+    return {"strange_header": strange_header} """
+
+@app.get("/items/")
+async def read_items(x_token: Union[List[str], None] = Header(default=None)):
+    return {"X-Token values": x_token}
+
+# input
+# X-Token: foo
+# X-Token: bar
+
+# output
+# output
+#{
+#    "X-Token values": [
+#        "bar",
+#        "foo"
+#    ]
+#}
