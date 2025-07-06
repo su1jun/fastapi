@@ -1,9 +1,8 @@
-from typing import Annotated
-from fastapi import Cookie, FastAPI
+from typing import Union
+from fastapi import FastAPI, Header
 
 app = FastAPI()
 
-# using cookie
 @app.get("/items/")
-async def read_items(ads_id: Annotated[str | None, Cookie()] = None):
-    return {"ads_id": ads_id}
+async def read_items(user_agent: Union[str, None] = Header(default=None)):
+    return {"User-Agent": user_agent}
