@@ -1,32 +1,17 @@
-from typing import List, Union
-from fastapi import FastAPI, Header
+from typing import Annotated
+
+from fastapi import Cookie, FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 
-""" @app.get("/items/")
-async def read_items(user_agent: Union[str, None] = Header(default=None)):
-    return {"User-Agent": user_agent} """
 
-""" @app.get("/items/")
-async def read_items(
-    strange_header: Union[str, None] = Header(default=None, convert_underscores=False),
-):
-    return {"strange_header": strange_header} """
+class Cookies(BaseModel):
+    session_id: str
+    fatebook_tracker: str | None = None
+    googall_tracker: str | None = None
+
 
 @app.get("/items/")
-async def read_items(x_token: Union[List[str], None] = Header(default=None)):
-    return {"X-Token values": x_token}
-
-# input
-# X-Token: foo
-# X-Token: bar
-
-# output
-# output
-#{
-#    "X-Token values": [
-#        "bar",
-#        "foo"
-#    ]
-#}
-#
+async def read_items(cookies: Annotated[Cookies, Cookie()]):
+    return cookies
