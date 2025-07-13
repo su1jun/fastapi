@@ -7,6 +7,7 @@ app = FastAPI()
 
 
 class CommonHeaders(BaseModel):
+    # model_config = {"extra": "forbid"} # forbid extra fields
     host: str
     save_data: bool
     if_modified_since: str | None = None
@@ -17,3 +18,14 @@ class CommonHeaders(BaseModel):
 @app.get("/items/")
 async def read_items(headers: Annotated[CommonHeaders, Header()]):
     return headers
+
+# {
+#     "detail": [
+#         {
+#             "type": "extra_forbidden",
+#             "loc": ["header", "tool"],
+#             "msg": "Extra inputs are not permitted",
+#             "input": "plumbus",
+#         }
+#     ]
+# }
