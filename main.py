@@ -65,6 +65,21 @@ items = {
     },
 }
 
+
 @app.get("/items/{item_id}", response_model=Union[PlaneItem, CarItem])
 async def read_item(item_id: str):
     return items[item_id]
+
+# model list example
+class Item(BaseModel):
+    name: str
+    description: str
+
+items = [
+    {"name": "Foo", "description": "There comes my hero"},
+    {"name": "Red", "description": "It's my aeroplane"},
+]
+
+@app.get("/items/", response_model=list[Item])
+async def read_items():
+    return items
